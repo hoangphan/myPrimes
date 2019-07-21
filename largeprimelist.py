@@ -1,6 +1,7 @@
 import time
 import math 
 import random
+import sys, getopt
 
 def opt_mod(a, s, n):
 	assert (s >=0), "improper input to the optimize modulus function"
@@ -70,12 +71,33 @@ def genlargePrime(l, u):
 	#print ('%d') % n
 	return n
 
-n, l, u = input('Tell me the range to gen a number n random large prime following format n, l, u?\n')
+def proc_opt(argv):
+	n, l, u = 0, 2, 2
+	try:
+		opts, args = getopt.getopt(argv, "hn:l:u:")
+	except getopt.GetoptError:
+		print 'largeprimelist.py -n <num to gen> -l <lower bound> -u <upper bound>'
+		sys.exit(2)
+	for opt, arg in opts:
+		if opt == '-h':
+			print 'largeprimelist.py -n <num to gen> -l <lower bound> -u <upper bound>'
+		elif opt == '-n':
+			n = int(arg)
+		elif opt == '-l':
+			l = int(arg)
+		elif opt == '-u':
+			u = int(arg)
+	if (n <= 0 and l <=2 and u <=3): return (0,0,0)
+	return n, l, u
+
+n, l, u = proc_opt(sys.argv[1:])
+
+if (n, l, u) != (0, 0, 0):
+	print ("we are about to generate %d number of primes from %d to %d"  %(n, l, u))
+else: 
+	sys.exit(2)
 
 start = time.time()
-
-#om = opt_mod(a, s, n)
-#print om
 
 P = []
 
@@ -85,9 +107,5 @@ for i in range (0, n):
 
 P.sort()
 print P
-
-print ('prime number found %d')  % n
-
-# 1000, 3, 10000000000
 
 print ('time takes to compute is %s seconds' % (time.time()-start))
