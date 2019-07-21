@@ -3,6 +3,11 @@ import math
 import random
 import sys, getopt
 
+# Optimal function for Modulo of a big number exponent
+# based on the Fermat little theorem 
+# see more detail here
+# https://primes.utm.edu/notes/proofs/FermatsLittleTheorem.html
+
 def opt_mod(a, s, n):
 	assert (s >=0), "improper input to the optimize modulus function"
 	if s == 0:
@@ -16,6 +21,12 @@ def opt_mod(a, s, n):
 		y = opt_mod(a, (s-1)/2, n)
 		return (a*y*y) % n
 
+
+
+# Rabin Miller algorithm implementation
+# to check if a big number is a Prime or not
+# with the pricision of 2^(-128)
+# with heavy support from Fermat little theorem (see above opt_mod function)
 
 def rabin_miller(n):
 	assert (n >=3 and n&0x1 == 1), "improper input to Rabin Miller"
@@ -46,6 +57,10 @@ def rabin_miller(n):
 		k = k +2
 	return True
 
+# Generic isPrime implementation
+# cover small divisors (odd number up to 1000)
+# with big prime divisors, rely on the Rabin Miller algorithm (see above)
+
 def isPrime(n):
 	assert (n >=3), "input n must be greater than 3"
 	p =[2]
@@ -57,6 +72,11 @@ def isPrime(n):
 			return (p[i]==n)
 
 	return rabin_miller(n)
+
+# Implemenation of generating large Prime number
+# base on simple idea: create a random number within a lower bound and upper bound
+# then check if it is a Prime or not
+# this is a very light way implementation
 
 def genlargePrime(l, u):
 	assert (l>2 and u >=l), "improper input range, check for a sensible range" 
@@ -70,6 +90,11 @@ def genlargePrime(l, u):
 			break
 	#print ('%d') % n
 	return n
+
+
+# Implementation of a processing option and arguments passing to the command line
+# to improve user experience and easier to integrate into a GUI tool chain
+# this is a very simple version.
 
 def proc_opt(argv):
 	n, l, u = 0, 2, 2
@@ -90,6 +115,8 @@ def proc_opt(argv):
 	if (n <= 0 and l <=2 and u <=3): return (0,0,0)
 	return n, l, u
 
+
+# starting the operation
 n, l, u = proc_opt(sys.argv[1:])
 
 if (n, l, u) != (0, 0, 0):
