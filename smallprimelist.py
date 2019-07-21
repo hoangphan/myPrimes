@@ -1,4 +1,5 @@
 import time
+import sys, getopt
 
 def smallPrimelist(n):
 	assert (n>=2 and n <= (2**40)), "n must be in a small range for this program"
@@ -24,8 +25,27 @@ def smallPrimelist(n):
 	print (P)
 	print ('number of found Primes: %d' % len(P))
 
+def proc_opt(argv):
+	n = 0
+	try:
+		opts, args = getopt.getopt(argv, "hn:")
+	except getopt.GetoptError:
+		print 'smallPrimelist.py -n <end number>'
+		sys.exit(2)
+	for opt, arg in opts:
+		if opt == '-h':
+			print 'smallPrimelist.py -n <end number>'
+		elif opt == '-n':
+			n = int(arg)
+	return n
 
-n = input('Tell me the number to print the prime list up to?\n')
+# parsing arguments
+n = proc_opt(sys.argv[1:])
+
+if n >= 2:
+	print ('we are about to list all prime number up to %d') % n
+else:
+	sys.exit(2)
 
 start = time.time()
 
