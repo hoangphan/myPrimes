@@ -99,25 +99,36 @@ def genlargePrime(l, u):
 def proc_opt(argv):
 	n, l, u = 0, 2, 2
 	try:
-		opts, args = getopt.getopt(argv, "hn:l:u:")
+		opts, args = getopt.getopt(argv, "hn:l:u", ["lowbin=", "upbin="])
 	except getopt.GetoptError:
 		print 'largeprimelist.py -n <num to gen> -l <lower bound> -u <upper bound>'
+		print 'OR the 2nd usage'
+		print 'largeprimelist.py -n <num to gen> --lowbin <lower bound of binary length> --upbin <upper bound of binary length>'
 		sys.exit(2)
 	for opt, arg in opts:
 		if opt == '-h':
 			print 'largeprimelist.py -n <num to gen> -l <lower bound> -u <upper bound>'
+			print 'OR the 2nd usage'
+			print 'largeprimelist.py -n <num to gen> --lowbin <lower bound of binary length> --upbin <upper bound of binary length>'
 		elif opt == '-n':
 			n = int(arg)
 		elif opt == '-l':
 			l = int(arg)
 		elif opt == '-u':
 			u = int(arg)
-	if (n <= 0 and l <=2 and u <=3): return (0,0,0)
+		elif opt == '--lowbin':
+			l = 2**int(arg)
+		elif opt == '--upbin':
+			u = 2**int(arg)
+	print n, l, u
+	if (n <= 0 or l <=2 or u <=3): return (0,0,0)
 	return n, l, u
 
 
 # starting the operation
 n, l, u = proc_opt(sys.argv[1:])
+
+
 
 if (n, l, u) != (0, 0, 0):
 	print ("we are about to generate %d number of primes from %d to %d"  %(n, l, u))
