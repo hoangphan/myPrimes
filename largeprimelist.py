@@ -39,6 +39,7 @@ def opt_mod_loop(a, s, n):
 		if b[j] == 1:
 			ret = (ret*tmp) %n
 		j = j + 1
+		#square the modulo n of the base
 		tmp = (tmp*tmp) %n
 	return ret
 
