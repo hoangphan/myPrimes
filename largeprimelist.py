@@ -26,16 +26,14 @@ def opt_mod_rec(a, s, n):
 def opt_mod_loop(a, s, n):
 	assert (s >=0), "improper input to the optimize modulus function"
 	b = []
-	i = 0
 	# to fill the array b with revert order of binary display
 	while (s > 0):
 		b.append(s&0x1)
 		s = s>>1
-		i = i + 1
 	ret = 1
 	tmp = a%n
 	# now perform the a**s mod n in binary loop way from lsb to msb
-	for j in range (0, i):
+	for j in range (0, len(b)):
 		if b[j] == 1:
 			ret = (ret*tmp) %n
 		j = j + 1
