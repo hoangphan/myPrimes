@@ -21,6 +21,26 @@ def opt_mod(a, s, n):
 		y = opt_mod(a, (s-1)/2, n)
 		return (a*y*y) % n
 
+
+def opt_mod_loop(a, s, n):
+	assert (s >=0), "improper input to the optimize modulus function"
+	b = []
+	i = 0
+	# to fill the array b with revert order of binary display
+	while (s > 0):
+		b.append(s&0x1)
+		s = s>>1
+		i = i + 1
+	ret = 1
+	tmp = a%n
+	# now perform the a**s mod n in binary loop way from lsb to msb
+	for j in range (0, i):
+		if b[j] == 1:
+			ret = (ret*tmp) %n
+		j = j + 1
+		tmp = (tmp*tmp) %n
+	return ret
+
 # Implementation of a processing option and arguments passing to the command line
 # to improve user experience and easier to integrate into a GUI tool chain
 # this is a very simple version.
@@ -54,7 +74,7 @@ else:
 
 start = time.time()
 
-x = opt_mod(a, s, n)
+x = opt_mod_loop(a, s, n)
 
 print x
 

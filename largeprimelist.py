@@ -8,18 +8,40 @@ import sys, getopt
 # see more detail here
 # https://primes.utm.edu/notes/proofs/FermatsLittleTheorem.html
 
-def opt_mod(a, s, n):
+def opt_mod_rec(a, s, n):
 	assert (s >=0), "improper input to the optimize modulus function"
+	#print ("enter opt_mod_rec with a, s, n %d %d %d" %(a, s, n))
 	if s == 0:
 		return 1
 	elif s==1:
 		return a%n
 	elif (s&0x1==0):
-		y = opt_mod(a, s>>1, n)
+		y = opt_mod_rec(a, s>>1, n)
 		return (y*y) % n
 	else:#s is odd
-		y = opt_mod(a, (s-1)/2, n)
+		y = opt_mod_rec(a, (s-1)/2, n)
 		return (a*y*y) % n
+
+
+def opt_mod_loop(a, s, n):
+	assert (s >=0), "improper input to the optimize modulus function"
+	b = []
+	i = 0
+	# to fill the array b with revert order of binary display
+	while (s > 0):
+		b.append(s&0x1)
+		s = s>>1
+		i = i + 1
+	ret = 1
+	tmp = a%n
+	# now perform the a**s mod n in binary loop way from lsb to msb
+	for j in range (0, i):
+		if b[j] == 1:
+			ret = (ret*tmp) %n
+		j = j + 1
+		tmp = (tmp*tmp) %n
+	return ret
+
 
 
 
@@ -43,7 +65,7 @@ def rabin_miller(n):
 		a = random.randrange(2, n)
 		# print ('enter danger zone with a = %d') %a
 		# DANGER OF EXPENSIVE COMPUTING
-		v = opt_mod(a, s, n)
+		v = opt_mod_loop(a, s, n)
 		if v != 1:
 			i = 0
 			while (v!= n-1):
@@ -53,7 +75,7 @@ def rabin_miller(n):
 					return False
 				else:
 					#continue the sequence of v power 2
-					(v, i) = (opt_mod(v, 2, n), i+1)
+					(v, i) = ((v% n)*(v%n), i+1)
 		k = k +2
 	return True
 
