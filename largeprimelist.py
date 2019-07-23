@@ -99,7 +99,7 @@ def genlargePrime(l, u):
 def proc_opt(argv):
 	n, l, u = 0, 2, 2
 	try:
-		opts, args = getopt.getopt(argv, "hn:l:u", ["lowbin=", "upbin="])
+		opts, args = getopt.getopt(argv, "hn:l:u:", ["lowbin=", "upbin="])
 	except getopt.GetoptError:
 		print 'largeprimelist.py -n <num to gen> -l <lower bound> -u <upper bound>'
 		print 'OR the 2nd usage'
@@ -120,7 +120,6 @@ def proc_opt(argv):
 			l = 2**int(arg)
 		elif opt == '--upbin':
 			u = 2**int(arg)
-	print n, l, u
 	if (n <= 0 or l <=2 or u <=3): return (0,0,0)
 	return n, l, u
 
